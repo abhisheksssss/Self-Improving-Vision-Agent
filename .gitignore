@@ -1,0 +1,119 @@
+# ─────────────────────────────────────────────
+# Python
+# ─────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+parts/
+var/
+sdist/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+.installed.cfg
+lib/
+lib64/
+MANIFEST
+
+# ─────────────────────────────────────────────
+# Virtual Environments
+# ─────────────────────────────────────────────
+.venv/
+venv/
+env/
+ENV/
+.env.local
+.python-version
+
+# ─────────────────────────────────────────────
+# Secrets & API Keys  (keep .env in .gitignore!)
+# ─────────────────────────────────────────────
+.env
+*.env
+*.secret
+secrets.json
+
+# ─────────────────────────────────────────────
+# Agent Runtime Data  (screenshots, DB, logs)
+# ─────────────────────────────────────────────
+data/
+logs/
+*.log
+
+# ─────────────────────────────────────────────
+# ChromaDB / Vector Store
+# ─────────────────────────────────────────────
+chroma/
+*.chroma
+*.sqlite3
+*.db
+
+# ─────────────────────────────────────────────
+# Jupyter Notebooks
+# ─────────────────────────────────────────────
+.ipynb_checkpoints
+*.ipynb
+
+# ─────────────────────────────────────────────
+# Testing & Coverage
+# ─────────────────────────────────────────────
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+coverage.xml
+*.cover
+*.py,cover
+nosetests.xml
+test-results/
+
+# ─────────────────────────────────────────────
+# Type Checking & Linting
+# ─────────────────────────────────────────────
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.ruff_cache/
+.pyright/
+
+# ─────────────────────────────────────────────
+# Package Managers
+# ─────────────────────────────────────────────
+uv.lock
+poetry.lock
+Pipfile.lock
+
+# ─────────────────────────────────────────────
+# IDEs & Editors
+# ─────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# ─────────────────────────────────────────────
+# Windows
+# ─────────────────────────────────────────────
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# ─────────────────────────────────────────────
+# Compiled docs / output
+# ─────────────────────────────────────────────
+docs/_build/
+site/
+
