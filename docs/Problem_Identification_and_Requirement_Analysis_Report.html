@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SIVAC: Problem Identification & Requirement Analysis Report</title>
+<style>
+  @page {
+    size: A4;
+    margin: 20mm 15mm 20mm 15mm;
+  }
+  body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+    color: #1e293b;
+    background-color: #ffffff;
+    line-height: 1.6;
+    margin: 0;
+    padding: 40px;
+    font-size: 11pt;
+  }
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .cover {
+    text-align: center;
+    padding: 60px 20px;
+    border-bottom: 3px solid #2563eb;
+    margin-bottom: 40px;
+    page-break-after: always;
+  }
+  .cover h1 {
+    font-size: 28pt;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 10px;
+    line-height: 1.2;
+  }
+  .cover .subtitle {
+    font-size: 14pt;
+    color: #475569;
+    font-weight: 500;
+    margin-bottom: 30px;
+  }
+  .badge {
+    display: inline-block;
+    padding: 6px 14px;
+    font-size: 9pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-radius: 9999px;
+    background: #eff6ff;
+    color: #2563eb;
+    border: 1px solid #bfdbfe;
+    margin-bottom: 25px;
+  }
+  .metadata-table {
+    margin: 40px auto 0 auto;
+    max-width: 500px;
+    text-align: left;
+    border-collapse: collapse;
+    font-size: 10pt;
+  }
+  .metadata-table td {
+    padding: 8px 14px;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  .metadata-table td.label {
+    font-weight: 700;
+    color: #64748b;
+    width: 35%;
+  }
+  .metadata-table td.val {
+    color: #0f172a;
+    font-weight: 600;
+  }
+  h2 {
+    font-size: 18pt;
+    color: #0f172a;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 6px;
+    margin-top: 36px;
+    margin-bottom: 16px;
+  }
+  h3 {
+    font-size: 13pt;
+    color: #1e3a8a;
+    margin-top: 24px;
+    margin-bottom: 10px;
+  }
+  h4 {
+    font-size: 11pt;
+    color: #334155;
+    margin-top: 18px;
+    margin-bottom: 6px;
+  }
+  p, li {
+    text-align: justify;
+    color: #334155;
+  }
+  ul, ol {
+    margin-top: 6px;
+    margin-bottom: 16px;
+    padding-left: 24px;
+  }
+  li {
+    margin-bottom: 6px;
+  }
+  .callout {
+    background: #f8fafc;
+    border-left: 4px solid #2563eb;
+    padding: 14px 18px;
+    border-radius: 0 8px 8px 0;
+    margin: 20px 0;
+    font-size: 10pt;
+  }
+  .callout.alert {
+    border-left-color: #ef4444;
+    background: #fef2f2;
+  }
+  .callout.success {
+    border-left-color: #10b981;
+    background: #f0fdf4;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 9.5pt;
+  }
+  th, td {
+    padding: 10px 12px;
+    text-align: left;
+    border: 1px solid #cbd5e1;
+  }
+  th {
+    background-color: #f1f5f9;
+    font-weight: 700;
+    color: #0f172a;
+  }
+  tr:nth-child(even) {
+    background-color: #f8fafc;
+  }
+  code {
+    font-family: 'Consolas', 'Courier New', Courier, monospace;
+    background: #f1f5f9;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 9pt;
+    color: #0f172a;
+  }
+  pre {
+    background: #0f172a;
+    color: #f8fafc;
+    padding: 16px;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-size: 9pt;
+    line-height: 1.4;
+  }
+  pre code {
+    background: transparent;
+    color: #f8fafc;
+    padding: 0;
+  }
+  .formula {
+    text-align: center;
+    background: #f8fafc;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+    font-family: 'Cambria Math', 'Times New Roman', serif;
+    font-size: 11pt;
+    margin: 14px 0;
+  }
+  @media print {
+    body {
+      padding: 0;
+    }
+    .page-break {
+      page-break-after: always;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- COVER PAGE -->
+  <div class="cover">
+    <span class="badge">Formal Engineering Specification</span>
+    <h1>SIVAC: Problem Identification & Requirement Analysis</h1>
+    <div class="subtitle">Self-Improving Vision Agent for Autonomous Computer Use</div>
+    <p style="color: #64748b; max-width: 600px; margin: 0 auto;">
+      A comprehensive technical investigation into GUI agent fragility, coordinate drift, open-loop amnesia, and a multi-modal closed-loop architecture for autonomous desktop and web interaction.
+    </p>
+
+    <table class="metadata-table">
+      <tr>
+        <td class="label">Document ID</td>
+        <td class="val">SIVAC-ENG-REP-001</td>
+      </tr>
+      <tr>
+        <td class="label">Version</td>
+        <td class="val">1.0.0 (Release)</td>
+      </tr>
+      <tr>
+        <td class="label">Author</td>
+        <td class="val">Abhishek Sahu (abhisheksssss)</td>
+      </tr>
+      <tr>
+        <td class="label">Target Platform</td>
+        <td class="val">Windows 10 / 11 (64-bit) & Web</td>
+      </tr>
+      <tr>
+        <td class="label">Status</td>
+        <td class="val">Approved for Implementation</td>
+      </tr>
+      <tr>
+        <td class="label">Date</td>
+        <td class="val">September 2026</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- EXECUTIVE SUMMARY -->
+  <h2>Executive Summary</h2>
+  <p>
+    Autonomous Graphical User Interface (GUI) computer-use agents represent the next frontier in artificial intelligence, bridging high-level natural language human intent with complex digital operating environments. However, contemporary vision-based computer control agents (such as Anthropic Computer Use API, OSWorld baselines, and commercial RPA scripts) suffer from critical structural deficiencies: <strong>perception coordinate drift</strong>, <strong>open-loop execution failure loops</strong>, <strong>cross-session amnesia</strong>, <strong>platform fragmentation (Web vs. Desktop)</strong>, and <strong>prohibitive inference token costs</strong>.
+  </p>
+  <p>
+    <strong>SIVAC</strong> (<em>Self-Improving Vision Agent for Autonomous Computer Use</em>) resolves these failure modes through an integrated multi-modal closed-loop paradigm. SIVAC unifies a <strong>hybrid perception engine</strong> (VLM visual grounding, local OCR fallback, Playwright browser DOM, and Windows UI Automation), a <strong>closed-loop verification and autonomous recovery state machine</strong> governed via LangGraph, and a <strong>dual-layer self-improvement memory architecture</strong> (SQLite structured trajectory logs and ChromaDB semantic vector store). This report establishes the complete problem definition, stakeholder needs, functional/non-functional specifications, and traceability framework.
+  </p>
+
+  <div class="callout">
+    <strong>Key Architectural Decision:</strong> SIVAC decouples high-level reasoning from hardware coordinates. The planner targets semantic element identifiers (e.g., <code>target_id: "element_4"</code>), while deterministic execution primitives resolve safe centroid coordinates adjusted for OS DPI scaling.
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- SECTION 1: PROBLEM IDENTIFICATION -->
+  <h2>1. Problem Identification & Root-Cause Analysis</h2>
+  <p>
+    Through empirical benchmarking of modern vision-action models across desktop and web workflows, five foundational systemic failure modes were identified:
+  </p>
+
+  <h3>1.1 Problem 1: Perception Fragility & Coordinate Drift</h3>
+  <p>
+    Standard VLM computer-use agents prompt a model to output direct coordinate pairs: <code>click(x, y)</code>. In real operating environments, this approach fails due to:
+  </p>
+  <ul>
+    <li><strong>DPI Scaling Quantization:</strong> Modern Windows systems utilize non-integer scaling (125%, 150%, 175%). High-resolution screenshots (1080p, 1440p, 4K) are downsampled to fit VLM context limits. Projecting predicted normalized coordinates back to native hardware space introduces an error margin of 10 to 30 pixels, easily missing compact buttons or hitting dead zones.</li>
+    <li><strong>Textless & Miniature UI Targets:</strong> Icons such as minimize/maximize, checkboxes, toggle switches, and dropdown arrows lack textual labels and measure under 16x16 pixels, frequently escaping detection in downsampled images.</li>
+    <li><strong>Custom Renderers:</strong> Electron, Qt, Flutter, and Canvas applications do not expose standard DOM structures, rendering pure DOM tools blind and pure vision models prone to hallucinated boundaries.</li>
+  </ul>
+
+  <h3>1.2 Problem 2: Open-Loop Execution & The Amnesiac Failure Loop</h3>
+  <p>
+    Existing GUI agents typically dispatch an action and immediately assume success without inspecting post-action consequences:
+  </p>
+  <div class="formula">
+    State S<sub>t</sub> &nbsp;&longrightarrow;&nbsp; Action A<sub>t</sub> &nbsp;&longrightarrow;&nbsp; OS Dispatch &nbsp;&longrightarrow;&nbsp; Assume S<sub>t+1</sub> Succeeded
+  </div>
+  <ul>
+    <li><strong>Asynchronous UI Latency:</strong> Applications experience network delays, background rendering, and loading animations. Actions dispatched before the UI finishes rendering are silently dropped.</li>
+    <li><strong>Modal Dialogs & Focus Stealing:</strong> UAC prompts, cookie banners, and save dialogs intercept clicks. Without post-action verification, the agent continues executing downstream steps on an invalid mental state, entering repetitive "death loops" that burn tokens until hard timeout.</li>
+  </ul>
+
+  <h3>1.3 Problem 3: The Amnesia Problem (Zero Cross-Session Learning)</h3>
+  <p>
+    Current LLM agents operate with purely ephemeral contexts:
+  </p>
+  <ul>
+    <li><strong>Zero Experiential Accumulation:</strong> If an agent expends 10 trial-and-error steps discovering that an internal enterprise app requires double-clicking an obscure icon, that knowledge is discarded when the session ends.</li>
+    <li><strong>Repetitive Mistakes:</strong> On subsequent runs of the identical task, the agent repeats the exact same sequence of failures, incurring redundant latency and token costs.</li>
+  </ul>
+
+  <h3>1.4 Problem 4: Platform Silos (Web vs. Desktop Fragmentation)</h3>
+  <ul>
+    <li><strong>Web-Only Tools:</strong> Confined to the browser DOM; incapable of handling desktop file dialogs, system settings, or native apps (Excel, ERP software, IDEs).</li>
+    <li><strong>Desktop-Only Tools:</strong> Treat browser windows as dumb pixels, ignoring the deterministic DOM tree, leading to slow and brittle visual clicking.</li>
+    <li><strong>Real-World Enterprise Reality:</strong> Real workflows inherently cross boundaries (e.g., download report in Chrome &rarr; parse in Excel &rarr; upload to desktop accounting software).</li>
+  </ul>
+
+  <h3>1.5 Problem 5: Economic Viability, Token Latency & Safety Hazards</h3>
+  <ul>
+    <li><strong>The "Token Tax":</strong> Streaming full-screen 1080p/4K screenshots (1,600+ tokens per image) on every click costs significant API fees and triggers rate limits.</li>
+    <li><strong>Sluggish Latency:</strong> Multimodal API calls require 2 to 5 seconds per step, making 20-step tasks take several minutes.</li>
+    <li><strong>Safety Hazards:</strong> Unrestricted OS keyboard/mouse automation risks accidental data destruction (<code>Shift+Delete</code>), sending unsent emails, or closing unsaved work without a kill switch.</li>
+  </ul>
+
+  <div class="page-break"></div>
+
+  <!-- SECTION 2: STAKEHOLDERS -->
+  <h2>2. Stakeholder & User Persona Analysis</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 25%;">User Persona</th>
+        <th style="width: 35%;">Operational Objectives</th>
+        <th style="width: 40%;">Key Pain Points Addressed</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Knowledge Worker</strong></td>
+        <td>Automate cross-app repetitive data entry and reporting using natural language.</td>
+        <td>Eliminates brittle RPA scripts that break upon minor layout updates or font changes.</td>
+      </tr>
+      <tr>
+        <td><strong>QA / SDET Engineer</strong></td>
+        <td>End-to-end regression and integration testing for complex desktop and web software.</td>
+        <td>Provides autonomous test navigation with visual verification and failure diagnostics.</td>
+      </tr>
+      <tr>
+        <td><strong>AI Systems Researcher</strong></td>
+        <td>Evaluate multimodal vision-action models, memory retention, and self-improvement.</td>
+        <td>Fully inspectable LangGraph state machine, structured SQLite trajectories, and ChromaDB embeddings.</td>
+      </tr>
+      <tr>
+        <td><strong>IT & Security Admin</strong></td>
+        <td>Ensure zero workstation harm, credential isolation, and immediate user intervention.</td>
+        <td>Instant kill-switch (<code>Ctrl+Alt+Esc</code>), destructive action interceptor, and isolated secrets.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- SECTION 3: REQUIREMENTS SPECIFICATION -->
+  <h2>3. Detailed Requirements Specification</h2>
+
+  <h3>3.1 Functional Requirements (FR)</h3>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 15%;">Req ID</th>
+        <th style="width: 25%;">Feature Name</th>
+        <th style="width: 60%;">Detailed Functional Specification</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>FR-1</strong></td>
+        <td>Multi-Modal Hybrid Perception</td>
+        <td>Capture desktop screen via <code>mss</code> (&le; 150ms); extract visual elements with VLM; run local OCR fallback (<code>pytesseract</code>); extract Windows UIA and Playwright DOM trees; merge elements via IoU &ge; 0.5 into a unified <code>UIState</code>.</td>
+      </tr>
+      <tr>
+        <td><strong>FR-2</strong></td>
+        <td>Hierarchical Planning</td>
+        <td>Decompose natural language goal into sub-goals; generate actions referencing semantic element IDs (e.g., <code>target_id: "element_4"</code>) rather than raw pixels.</td>
+      </tr>
+      <tr>
+        <td><strong>FR-3</strong></td>
+        <td>Controlled Execution Primitives</td>
+        <td>Execute mouse clicks, typing, hotkeys (<code>Ctrl+C</code>, <code>Alt+Tab</code>), scrolling via <code>pyautogui</code>; execute browser actions via Playwright; manage windows via <code>pywinauto</code>; auto-scale coordinates by OS DPI factor.</td>
+      </tr>
+      <tr>
+        <td><strong>FR-4</strong></td>
+        <td>Closed-Loop Verification</td>
+        <td>Two-tier outcome check: Tier 1 (fast deterministic title/URL/DOM change &le; 200ms) + Tier 2 (visual delta comparison); classify outcome as <code>SUCCESS</code>, <code>NOOP</code>, <code>UNEXPECTED_MODAL</code>, <code>WRONG_NAVIGATION</code>, or <code>SYSTEM_ERROR</code>.</td>
+      </tr>
+      <tr>
+        <td><strong>FR-5</strong></td>
+        <td>Autonomous Recovery</td>
+        <td>Diagnose root cause upon failure; trigger adaptive tactics (dismiss modal, fallback from DOM to UIA/VLM, keyboard Tab navigation, or backtrack via <code>Esc</code>); enforce 3-retry cap per step.</td>
+      </tr>
+      <tr>
+        <td><strong>FR-6</strong></td>
+        <td>Dual-Layer Memory System</td>
+        <td>Store full step trajectories in relational SQLite; embed goals, screen summaries, and key UI states in ChromaDB; retrieve top-3 similar past experiences via cosine similarity before planning.</td>
+      </tr>
+      <tr>
+        <td><strong>FR-7</strong></td>
+        <td>Self-Improvement Engine</td>
+        <td>Post-task trajectory reflection; synthesize machine-actionable heuristics: <code>IF [Context] THEN [Strategy]</code>; dynamically update modality preference weights per application.</td>
+      </tr>
+      <tr>
+        <td><strong>FR-8</strong></td>
+        <td>Dashboard & Safety Switch</td>
+        <td>FastAPI WebSocket live screen streaming with bounding box overlays; interactive pause/step controls; OS-level emergency stop hook (<code>Ctrl+Alt+Esc</code>) halting automation in &le; 50ms.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>3.2 Non-Functional Requirements (NFR)</h3>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 20%;">Category</th>
+        <th style="width: 30%;">Requirement</th>
+        <th style="width: 50%;">Quantitative Target / Constraint</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>NFR-1: Performance</strong></td>
+        <td>Perception Cycle Latency</td>
+        <td>Screen capture + hybrid OCR/UIA extraction completes in &le; 1.2 seconds.</td>
+      </tr>
+      <tr>
+        <td><strong>NFR-1: Performance</strong></td>
+        <td>Planning Cycle Latency</td>
+        <td>Reasoning model (Gemini 2.5 Flash / Groq LLaMA-3.3-70b) responds in &le; 2.0 seconds.</td>
+      </tr>
+      <tr>
+        <td><strong>NFR-1: Performance</strong></td>
+        <td>Memory Search Latency</td>
+        <td>ChromaDB vector similarity search executes in &le; 100 milliseconds.</td>
+      </tr>
+      <tr>
+        <td><strong>NFR-2: Safety</strong></td>
+        <td>Destructive Action Guard</td>
+        <td>Commands with <code>format</code>, <code>del /s</code>, <code>rmdir</code>, or checkout buttons pause and prompt user.</td>
+      </tr>
+      <tr>
+        <td><strong>NFR-2: Safety</strong></td>
+        <td>Kill-Switch Preemption</td>
+        <td>Pressing <code>Ctrl+Alt+Esc</code> terminates action execution within &le; 50 milliseconds.</td>
+      </tr>
+      <tr>
+        <td><strong>NFR-3: Cost</strong></td>
+        <td>Zero-Cost Base Operation</td>
+        <td>100% operational on free-tier APIs (Gemini 2.5 Flash free quota, Groq, OpenRouter free models).</td>
+      </tr>
+      <tr>
+        <td><strong>NFR-4: Robustness</strong></td>
+        <td>Fail-Safe UI Release</td>
+        <td>On any unhandled exception, automatically release all pressed mouse buttons and keyboard keys.</td>
+      </tr>
+      <tr>
+        <td><strong>NFR-5: Modularity</strong></td>
+        <td>Pydantic Data Contracts</td>
+        <td>100% of data models (<code>UIState</code>, <code>UIElement</code>, <code>BBox</code>, <code>Action</code>) validated via Pydantic v2.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="page-break"></div>
+
+  <!-- SECTION 4: TRACEABILITY MATRIX -->
+  <h2>4. Requirements Traceability Matrix (RTM)</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 12%;">Problem</th>
+        <th style="width: 28%;">Root Cause</th>
+        <th style="width: 18%;">Requirements</th>
+        <th style="width: 22%;">Target Code Module</th>
+        <th style="width: 20%;">Verification Standard</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>P-1</strong></td>
+        <td>Coordinate drift, DPI scaling, tiny UI icons</td>
+        <td>FR-1, FR-2.3, FR-3.4, NFR-2</td>
+        <td><code>perception/</code> (vlm, ocr, uia, hybrid_merger)</td>
+        <td>IoU &ge; 0.70; zero duplicate bounding boxes; accurate centroid click.</td>
+      </tr>
+      <tr>
+        <td><strong>P-2</strong></td>
+        <td>Open-loop failure, modal popups, death loops</td>
+        <td>FR-4, FR-5, NFR-4</td>
+        <td><code>agent/</code> (verifier, recovery, graph)</td>
+        <td>Detects <code>UNEXPECTED_MODAL</code>; dismisses popup; resumes task without looping.</td>
+      </tr>
+      <tr>
+        <td><strong>P-3</strong></td>
+        <td>Amnesia, lack of cross-session learning</td>
+        <td>FR-6, FR-7</td>
+        <td><code>memory/</code>, <code>learning/</code> (reflection, lesson_extractor)</td>
+        <td>Second task run retrieves learned rule and executes with &ge; 30% fewer steps.</td>
+      </tr>
+      <tr>
+        <td><strong>P-4</strong></td>
+        <td>Web vs. Desktop platform fragmentation</td>
+        <td>FR-1.4, FR-3.1, FR-3.2, FR-3.3</td>
+        <td><code>perception/dom.py</code>, <code>actions/browser.py</code>, <code>desktop.py</code></td>
+        <td>Seamlessly transitions from web browser download to native desktop app.</td>
+      </tr>
+      <tr>
+        <td><strong>P-5</strong></td>
+        <td>High token costs and inference latency</td>
+        <td>NFR-1, NFR-3, FR-1.4, FR-4.1</td>
+        <td><code>model/factory.py</code>, hierarchical routing</td>
+        <td>Executes multi-step task within free-tier rate limits and &le; 3.5s per step.</td>
+      </tr>
+      <tr>
+        <td><strong>P-6</strong></td>
+        <td>Safety hazards and lack of instant stop</td>
+        <td>FR-8.3, NFR-2, FR-3.1</td>
+        <td><code>actions/safety.py</code>, keyboard hook</td>
+        <td><code>Ctrl+Alt+Esc</code> halts execution in &le; 50ms and releases input state.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- SECTION 5: CONCLUSION -->
+  <h2>5. Conclusion & Architectural Readiness</h2>
+  <p>
+    This report establishes the complete problem formulation, stakeholder justification, functional specifications, and non-functional performance envelopes for SIVAC. The architecture directly resolves the core vulnerabilities that inhibit existing GUI agents by coupling <strong>hybrid multi-modal perception</strong>, <strong>two-tier verification</strong>, and <strong>episodic self-improvement</strong>.
+  </p>
+  <div class="callout success">
+    <strong>Implementation Sign-Off:</strong> The project structure, virtual environment (<code>uv</code>), LangChain model layer, and perception engine are established. Implementation continues under Phase 3 (Actions & Safety) and Phase 4 (LangGraph Controller).
+  </div>
+
+</div>
+
+</body>
+</html>
+

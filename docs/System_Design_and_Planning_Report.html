@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SIVAC: System Design & Planning Specification Report</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'neutral',
+      flowchart: { useMaxWidth: true, htmlLabels: true, curve: 'basis' }
+    });
+  });
+</script>
+<style>
+  @page {
+    size: A4;
+    margin: 20mm 15mm 20mm 15mm;
+  }
+  body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+    color: #1e293b;
+    background-color: #ffffff;
+    line-height: 1.6;
+    margin: 0;
+    padding: 40px;
+    font-size: 11pt;
+  }
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  .cover {
+    text-align: center;
+    padding: 60px 20px;
+    border-bottom: 3px solid #2563eb;
+    margin-bottom: 40px;
+    page-break-after: always;
+  }
+  .cover h1 {
+    font-size: 28pt;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 10px;
+    line-height: 1.2;
+  }
+  .cover .subtitle {
+    font-size: 14pt;
+    color: #475569;
+    font-weight: 500;
+    margin-bottom: 30px;
+  }
+  .badge {
+    display: inline-block;
+    padding: 6px 14px;
+    font-size: 9pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-radius: 9999px;
+    background: #eff6ff;
+    color: #2563eb;
+    border: 1px solid #bfdbfe;
+    margin-bottom: 25px;
+  }
+  .metadata-table {
+    margin: 40px auto 0 auto;
+    max-width: 550px;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  .metadata-table td {
+    padding: 8px 14px;
+    border: 1px solid #e2e8f0;
+    font-size: 10pt;
+  }
+  .metadata-table .label {
+    font-weight: 600;
+    background: #f8fafc;
+    color: #475569;
+    width: 38%;
+  }
+  .metadata-table .val {
+    color: #0f172a;
+    font-family: 'Consolas', monospace;
+  }
+  h2 {
+    font-size: 16pt;
+    font-weight: 700;
+    color: #0f172a;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 8px;
+    margin-top: 40px;
+    margin-bottom: 16px;
+  }
+  h3 {
+    font-size: 12.5pt;
+    font-weight: 600;
+    color: #1e293b;
+    margin-top: 24px;
+    margin-bottom: 10px;
+  }
+  p {
+    margin-top: 0;
+    margin-bottom: 12px;
+    color: #334155;
+  }
+  ul, ol {
+    margin-top: 6px;
+    margin-bottom: 16px;
+    padding-left: 24px;
+  }
+  li {
+    margin-bottom: 6px;
+  }
+  .callout {
+    background: #f8fafc;
+    border-left: 4px solid #2563eb;
+    padding: 14px 18px;
+    border-radius: 0 8px 8px 0;
+    margin: 20px 0;
+    font-size: 10pt;
+  }
+  .callout.alert {
+    border-left-color: #ef4444;
+    background: #fef2f2;
+  }
+  .callout.success {
+    border-left-color: #10b981;
+    background: #f0fdf4;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 9.5pt;
+  }
+  th, td {
+    padding: 10px 12px;
+    text-align: left;
+    border: 1px solid #cbd5e1;
+  }
+  th {
+    background-color: #f1f5f9;
+    font-weight: 700;
+    color: #0f172a;
+  }
+  tr:nth-child(even) {
+    background-color: #f8fafc;
+  }
+  code {
+    font-family: 'Consolas', 'Courier New', Courier, monospace;
+    background: #f1f5f9;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 9pt;
+    color: #0f172a;
+  }
+  pre {
+    background: #0f172a;
+    color: #f8fafc;
+    padding: 16px;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-size: 9pt;
+    line-height: 1.4;
+  }
+  .mermaid-wrapper {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 24px 0;
+    display: flex;
+    justify-content: center;
+    overflow-x: auto;
+  }
+  .page-break {
+    page-break-after: always;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- COVER PAGE -->
+  <div class="cover">
+    <div class="badge">Architecture & Engineering Specification</div>
+    <h1>SIVAC: System Design & Planning Specification</h1>
+    <div class="subtitle">Architectural Blueprint, UML Specifications, Dual-Layer Database Design & Implementation Roadmap</div>
+    
+    <table class="metadata-table">
+      <tr>
+        <td class="label">Document ID</td>
+        <td class="val">SIVAC-ENG-DES-002</td>
+      </tr>
+      <tr>
+        <td class="label">Version</td>
+        <td class="val">1.0.0 (Release)</td>
+      </tr>
+      <tr>
+        <td class="label">Author</td>
+        <td class="val">Abhishek Sahu (abhisheksssss)</td>
+      </tr>
+      <tr>
+        <td class="label">Target Platform</td>
+        <td class="val">Windows 10 / 11 (64-bit) & Web</td>
+      </tr>
+      <tr>
+        <td class="label">Status</td>
+        <td class="val">Approved for Implementation</td>
+      </tr>
+      <tr>
+        <td class="label">Date</td>
+        <td class="val">September 2026</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- SECTION 1: EXECUTIVE SUMMARY -->
+  <h2>1. Executive Summary & Architectural Mission</h2>
+  <p>
+    Autonomous Graphical User Interface (GUI) computer-use agents must reliably bridge high-level natural language human intent with complex desktop operating systems and browser environments. While frontier Vision-Language Models (VLMs) have demonstrated zero-shot multimodal reasoning, deploying them as raw coordinate clickers (e.g. <code>click(x, y)</code>) leads to coordinate drift, open-loop execution failure loops, prohibitive inference costs, and zero cross-session memory.
+  </p>
+  <p>
+    <strong>SIVAC</strong> (<em>Self-Improving Vision Agent for Autonomous Computer Use</em>) is designed as a resilient, closed-loop cybernetic system. Rather than treating computer operation as an open-loop script, SIVAC executes an 8-stage deterministic control loop:
+  </p>
+  <div class="callout success">
+    <strong>SIVAC Cybernetic Control Loop:</strong><br>
+    <code>Observe &rarr; Perceive &rarr; Retrieve &rarr; Plan &rarr; Act &rarr; Verify &rarr; Diagnose/Recover &rarr; Reflect/Learn</code>
+  </div>
+
+  <!-- SECTION 2: SYSTEM ARCHITECTURE -->
+  <h2>2. System Architecture</h2>
+  <p>
+    The system architecture decouples perception, orchestration, action execution, and memory storage into modular subsystems communicating via strongly typed Pydantic contracts.
+  </p>
+
+  <div class="mermaid-wrapper">
+    <div class="mermaid">
+flowchart TB
+    subgraph UI["1. Presentation & Telemetry Layer"]
+        CLI["SIVAC CLI Client"]
+        Dashboard["React + Vite Telemetry Web UI"]
+        FastAPI["FastAPI Gateway & WebSocket Server"]
+    end
+
+    subgraph Core["2. Agent Orchestration Engine (LangGraph)"]
+        Graph["LangGraph State Machine (AgentState)"]
+        Planner["Hierarchical Reasoning Planner"]
+        Verifier["Two-Tier Outcome Verifier"]
+        Recovery["Autonomous Recovery Engine"]
+        Reflector["Post-Task Reflector"]
+    end
+
+    subgraph Perception["3. Hybrid Perception Engine"]
+        Screen["MSS High-DPI Capture"]
+        VLM["VLM Detector (Groq Qwen-VL / Gemini)"]
+        OCR["Local OCR (pytesseract)"]
+        DOM["Playwright Web DOM Inspector"]
+        UIA["Windows UI Automation Inspector"]
+        Merger["Spatial IoU Merger (DOM > UIA > VLM > OCR)"]
+        UIStateObj["Unified UIState Object"]
+    end
+
+    subgraph ActionSafety["4. Action Primitives & Safety"]
+        Safety["Safety Guard & Coordinate Filter"]
+        Kill["Hardware Failsafe Kill-Switch"]
+        Executor["Action Dispatcher (schema.py)"]
+        Mouse["Mouse Driver (pyautogui smooth)"]
+        Keyboard["Keyboard Driver (typewrite/hotkeys)"]
+        Browser["Playwright CDP Driver"]
+        Desktop["Desktop Window Manager"]
+    end
+
+    subgraph Storage["5. Dual-Layer Memory Store"]
+        SQLiteDB[("SQLite Trajectory DB (SQLAlchemy 2.0)")]
+        ChromaDB[("ChromaDB Vector Store (Learned Skills)")]
+    end
+
+    CLI --> FastAPI
+    Dashboard --> FastAPI
+    FastAPI --> Graph
+    Graph --> Perception
+    Screen --> VLM & OCR
+    DOM & UIA & VLM & OCR --> Merger --> UIStateObj --> Graph
+    Graph --> Planner
+    ChromaDB -.->|Injected Heuristics| Planner
+    Planner --> Safety --> Executor
+    Kill -.->|Interrupt| Executor
+    Executor --> Mouse & Keyboard & Browser & Desktop
+    Executor --> Verifier
+    Verifier -->|Failure| Recovery --> Planner
+    Verifier -->|Success| Graph
+    Graph --> Reflector --> SQLiteDB & ChromaDB
+    </div>
+  </div>
+
+  <!-- SECTION 3: UML SPECIFICATIONS -->
+  <h2>3. UML Diagrams</h2>
+
+  <h3>3.1 Use Case Diagram</h3>
+  <div class="mermaid-wrapper">
+    <div class="mermaid">
+flowchart LR
+    User((Human Operator))
+    Harness((QA Benchmark Runner))
+    Agent((SIVAC Engine))
+    OS((Target OS / Browser))
+
+    subgraph UC["SIVAC Use Cases"]
+        U1["Submit Natural Language Goal"]
+        U2["Emergency Kill Switch / Abort"]
+        U3["Inspect Live Trajectory & Bounding Boxes"]
+        U4["Multi-Modal UI Perception"]
+        U5["Query Learned Knowledge Memory"]
+        U6["Generate Subgoal Action Plan"]
+        U7["Validate Action Safety Constraints"]
+        U8["Execute Hardware / DOM Primitives"]
+        U9["Verify Outcome (Visual Diff & DOM)"]
+        U10["Diagnose Failure & Backtrack"]
+        U11["Reflect on Trajectory & Extract Skills"]
+        U12["Commit Episodic Trajectory & Vectors"]
+    end
+
+    User --> U1 & U2 & U3
+    Harness --> U1
+    U1 --> Agent
+    Agent --> U4 & U5 & U6 & U7 & U8 & U9 & U10 & U11 & U12
+    U2 -.->|Interrupts| U8
+    U8 --> OS
+    OS -.->|Screenshots / Accessibility Trees| U4
+    U9 -.->|If Step Fails| U10
+    U10 -.->|Replans| U6
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <h3>3.2 Class Diagram</h3>
+  <div class="mermaid-wrapper">
+    <div class="mermaid">
+classDiagram
+    class BBox {
+        +int x
+        +int y
+        +int width
+        +int height
+        +center() tuple[int, int]
+        +area() int
+        +iou(other: BBox) float
+    }
+
+    class UIElement {
+        +str id
+        +str source
+        +str type
+        +str text
+        +BBox bbox
+        +bool interactive
+        +dict attributes
+    }
+
+    class UIState {
+        +str screenshot_path
+        +int screen_width
+        +int screen_height
+        +float dpi_scale
+        +list~UIElement~ elements
+        +str active_app
+        +get_element_by_id(elem_id: str) UIElement
+        +get_elements_by_text(query: str) list~UIElement~
+    }
+
+    class HybridPerceptionEngine {
+        -ScreenshotEngine screenshot_engine
+        -VLMElemDetector vlm_detector
+        -OCRDetector ocr_detector
+        -DOMInspector dom_inspector
+        -UIAutomationInspector uia_inspector
+        +capture_and_perceive(context: dict) UIState
+    }
+
+    class ActionCommand {
+        +ActionType action_type
+        +str target_id
+        +tuple[int, int] coordinates
+        +str text
+        +str key
+        +list~str~ keys
+        +int scroll_amount
+        +float duration
+    }
+
+    class ActionExecutor {
+        -SafetyGuard safety_guard
+        -MouseController mouse
+        -KeyboardController keyboard
+        -BrowserController browser
+        -DesktopController desktop
+        +execute(cmd: ActionCommand, state: UIState) ExecutionResult
+    }
+
+    class AgentState {
+        +str task_id
+        +str goal
+        +int step_count
+        +UIState current_ui_state
+        +list~ActionCommand~ action_history
+        +list~ExecutionResult~ execution_history
+        +bool is_complete
+        +bool is_failed
+    }
+
+    class OutcomeVerifier {
+        +verify_step(before: UIState, after: UIState, cmd: ActionCommand) tuple[bool, str]
+    }
+
+    UIElement *-- BBox
+    UIState o-- UIElement
+    HybridPerceptionEngine ..> UIState : produces
+    ActionExecutor ..> ActionCommand : consumes
+    AgentState o-- UIState
+    AgentState o-- ActionCommand
+    OutcomeVerifier ..> AgentState : checks
+    </div>
+  </div>
+
+  <h3>3.3 Sequence Diagram: Closed-Loop Execution</h3>
+  <div class="mermaid-wrapper">
+    <div class="mermaid">
+sequenceDiagram
+    actor Operator as Operator
+    participant API as FastAPI Gateway
+    participant LG as LangGraph State Machine
+    participant Mem as Memory (Chroma + SQLite)
+    participant Percept as Hybrid Perception
+    participant Planner as Reasoning Planner
+    participant Act as Action Executor
+    participant OS as Desktop Environment
+    participant Verif as Outcome Verifier
+    participant Refl as Reflection Engine
+
+    Operator->>API: POST /api/v1/tasks (goal)
+    API->>LG: Initialize Task State
+    LG->>Mem: Query similar past tasks & skills
+    Mem-->>LG: Inject learned application heuristics
+    
+    loop Until Task Completed or Max Steps Exceeded
+        LG->>Percept: capture_and_perceive()
+        Percept->>OS: Capture screen buffer & accessibility trees
+        OS-->>Percept: Hardware screenshot & DOM trees
+        Percept-->>LG: Unified UIState
+        
+        LG->>Planner: Plan next action (goal, UIState, heuristics)
+        Planner-->>LG: ActionCommand (type=CLICK, target_id="btn_1")
+        
+        LG->>Act: execute(ActionCommand, UIState)
+        Act->>OS: Dispatch input event (smooth mouse move & click)
+        OS-->>Act: Input processed
+        Act-->>LG: ExecutionResult(success=True)
+        
+        LG->>Percept: Capture post-action screenshot
+        Percept-->>LG: Post-action UIState
+        
+        LG->>Verif: verify_step(pre_state, post_state, cmd)
+        alt Step Outcome Verified
+            Verif-->>LG: Passed(True)
+            LG->>Mem: Persist step in SQLite
+        else Verification Failed
+            Verif-->>LG: Passed(False, "No UI state change")
+            LG->>LG: Trigger recovery / alternative action
+        end
+    end
+
+    LG->>Refl: Analyze trajectory & extract lessons
+    Refl->>Mem: Commit SQLite audit & insert ChromaDB vector rules
+    LG-->>API: Task Completed
+    API-->>Operator: Telemetry summary & status
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- SECTION 4: DATABASE DESIGN -->
+  <h2>4. Database Design (ER Diagram & Schemas)</h2>
+
+  <h3>4.1 Relational Entity-Relationship Diagram</h3>
+  <div class="mermaid-wrapper">
+    <div class="mermaid">
+erDiagram
+    TASKS ||--o{ TRAJECTORIES : "generates"
+    TRAJECTORIES ||--|{ STEPS : "records"
+    STEPS ||--|| VERIFICATIONS : "validated_by"
+    TASKS ||--o| REFLECTIONS : "reflected_in"
+    REFLECTIONS ||--o{ LEARNED_SKILLS : "distills"
+
+    TASKS {
+        string id PK
+        string goal
+        string status
+        int total_steps
+        float total_duration_seconds
+        datetime created_at
+    }
+
+    TRAJECTORIES {
+        string id PK
+        string task_id FK
+        string model_used
+        int prompt_tokens
+        int completion_tokens
+        float estimated_cost_usd
+    }
+
+    STEPS {
+        string id PK
+        string trajectory_id FK
+        int step_number
+        string screenshot_before
+        string screenshot_after
+        json observation_elements
+        string planned_subgoal
+        json action_command
+        json execution_result
+    }
+
+    VERIFICATIONS {
+        string id PK
+        string step_id FK
+        boolean passed
+        float visual_diff_score
+        json dom_delta
+        string failure_reason
+        int retry_count
+    }
+
+    REFLECTIONS {
+        string id PK
+        string task_id FK
+        boolean overall_success
+        string root_cause_analysis
+        json friction_points
+    }
+
+    LEARNED_SKILLS {
+        string id PK
+        string reflection_id FK
+        string application_name
+        string trigger_condition
+        string heuristic_rule
+        float confidence_score
+    }
+    </div>
+  </div>
+
+  <h3>4.2 Dual-Layer Memory Specification</h3>
+  <p>
+    <strong>Layer 1 (Relational Audit Store):</strong> SQLite 3 with SQLAlchemy 2.0 ORM provides full transactional guarantees, foreign-key cascade deletions, and millisecond query times for debugging and replaying action traces.<br>
+    <strong>Layer 2 (Semantic Skill Memory):</strong> ChromaDB vector store running locally in-process without cloud infrastructure. It indexes past failure contexts and application behaviors using <code>all-MiniLM-L6-v2</code> embeddings. During task initialization, semantic search retrieves relevant heuristic rules (e.g. <em>"In Excel, pressing ESC is required before selecting ribbons"</em>) and appends them to the system prompt.
+  </p>
+
+  <!-- SECTION 5: TECHNOLOGY STACK -->
+  <h2>5. Technology Stack Selection & Rationale</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Subsystem</th>
+        <th>Selected Tech</th>
+        <th>Alternatives Considered</th>
+        <th>Rationale & Technical Tradeoff</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Core Language</strong></td>
+        <td>Python 3.12</td>
+        <td>Python 3.10, Node.js, Rust</td>
+        <td>Python provides first-class support for LangChain/LangGraph, OpenCV, PyTorch/ONNX, and OS automation libraries. 3.12 delivers significant runtime execution speedups.</td>
+      </tr>
+      <tr>
+        <td><strong>Package Manager</strong></td>
+        <td><code>uv</code> + <code>hatchling</code></td>
+        <td>Poetry, Pipenv, Conda</td>
+        <td>10-100x faster package resolution and installation. Pure PEP 621 compliance with universal <code>uv.lock</code> determinism.</td>
+      </tr>
+      <tr>
+        <td><strong>Orchestration</strong></td>
+        <td>LangGraph</td>
+        <td>AutoGen, CrewAI, Raw Loops</td>
+        <td>First-class cyclic graph execution with deterministic state rollback, human-in-the-loop breakpoints, and conditional failure recovery.</td>
+      </tr>
+      <tr>
+        <td><strong>VLM Providers</strong></td>
+        <td>Groq Qwen-VL & Gemini Flash</td>
+        <td>GPT-4o, Claude 3.5 Sonnet</td>
+        <td>Sub-500ms inference on Groq and Google AI Studio free tier allows continuous visual closed-loop cycles without incurring $50+/hr API bills.</td>
+      </tr>
+      <tr>
+        <td><strong>Screen Capture</strong></td>
+        <td><code>mss</code> + Pillow</td>
+        <td>OpenCV native, PyGetWindow</td>
+        <td>Sub-15ms multi-monitor buffer capture with zero external DLL dependencies.</td>
+      </tr>
+      <tr>
+        <td><strong>Action Drivers</strong></td>
+        <td>PyAutoGUI + Playwright + pywinauto</td>
+        <td>Native C Win32 hooks</td>
+        <td>Seamless bridging between browser DOM elements and native Windows OS desktop controls with built-in cursor corner safety kill-switches.</td>
+      </tr>
+      <tr>
+        <td><strong>Relational DB</strong></td>
+        <td>SQLite + SQLAlchemy 2.0</td>
+        <td>PostgreSQL, DuckDB</td>
+        <td>Zero setup, zero-daemon file portability, fully ACID compliant for desktop standalone deployment.</td>
+      </tr>
+      <tr>
+        <td><strong>Vector DB</strong></td>
+        <td>ChromaDB</td>
+        <td>Pinecone, Milvus, Qdrant</td>
+        <td>Pure Python embedded vector database running in-process; no Docker container or network round-trips required.</td>
+      </tr>
+      <tr>
+        <td><strong>API & UI</strong></td>
+        <td>FastAPI + React (Vite)</td>
+        <td>Flask, Streamlit, Gradio</td>
+        <td>Streamlit/Gradio suffer from heavy re-render latency during 30fps screen streaming. FastAPI WebSockets + React provides fluid, instant updates.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- SECTION 6: PROJECT PLAN & TIMELINE -->
+  <h2>6. Project Plan & Implementation Timeline</h2>
+  <div class="mermaid-wrapper">
+    <div class="mermaid">
+gantt
+    title SIVAC Progressive Roadmap
+    dateFormat  YYYY-MM-DD
+    section Phases 1-3
+    Phase 1: Model Abstraction        :done, p1, 2026-08-01, 2026-08-07
+    Phase 2: Hybrid Perception        :done, p2, 2026-08-08, 2026-08-20
+    Phase 3: Action Primitives        :active, p3, 2026-08-21, 2026-08-28
+    section Phases 4-6
+    Phase 4: Outcome Verifier         :p4, 2026-08-29, 2026-09-07
+    Phase 5: Dual-Layer Memory        :p5, 2026-09-08, 2026-09-15
+    Phase 6: LangGraph Orchestration  :p6, 2026-09-16, 2026-09-24
+    section Phases 7-9
+    Phase 7: Self-Improvement Engine  :p7, 2026-09-25, 2026-10-03
+    Phase 8: Telemetry API & UI       :p8, 2026-10-04, 2026-10-12
+    Phase 9: Benchmark Evaluation     :p9, 2026-10-13, 2026-10-22
+    </div>
+  </div>
+
+  <div class="callout success">
+    <strong>Implementation Sign-Off & Status:</strong> Phases 1 and 2 are complete and verified. Phase 3 (Actions & Safety) is actively in flight. This blueprint serves as the formal architectural baseline for Phases 4 through 9.
+  </div>
+
+</div>
+
+</body>
+</html>
